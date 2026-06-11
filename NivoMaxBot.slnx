@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="NivoMaxBot.Application/NivoMaxBot.Application.csproj" />
+  <Project Path="NivoMaxBot.Domain/NivoMaxBot.Domain.csproj" />
+  <Project Path="NivoMaxBot.Infrastructure/NivoMaxBot.Infrastructure.csproj" />
+  <Project Path="NivoMaxBot.MaxMessaging/NivoMaxBot.MaxMessaging.csproj" Id="02a9c41f-fefc-4cca-a2da-8a36fca02bcb" />
+  <Project Path="NivoMaxBot.Messaging/NivoMaxBot.Messaging.csproj" Id="6025c86e-5d85-4b15-8c5b-558c92b43c34" />
+  <Project Path="NivoMaxBot.Presentation/NivoMaxBot.Presentation.csproj" />
+  <Project Path="NivoMaxBot.Shared/NivoMaxBot.Shared.csproj" />
+  <Project Path="NivoMaxBot.Tests/NivoMaxBot.Tests.csproj" Id="6b5abc84-465d-4890-8521-ceef36827a53" />
+</Solution>
