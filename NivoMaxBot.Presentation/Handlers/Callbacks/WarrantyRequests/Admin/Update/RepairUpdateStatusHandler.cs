@@ -18,12 +18,12 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.WarrantyRequests.Admin.Upda
 
         public RepairUpdateStatusHandler(
             IMediator mediator,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IErrorHandler errorHandler,
             IMenuBuilder menuBuilder)
         {
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _menuBuilder = menuBuilder;
             _errorHandler = errorHandler;
         }

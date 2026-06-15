@@ -3,7 +3,7 @@
 namespace NivoMaxBot.Messaging.Routing;
 
 /// <summary>
-/// Представляет шаблон маршрута для callback-данных Telegram.
+/// Представляет шаблон маршрута для callback-данных.
 /// Поддерживает параметры в фигурных скобках, например: "category:view:{id:int}", "category:add:{parentId:int?}".
 /// </summary>
 public class RouteTemplate

@@ -5,6 +5,7 @@ using NivoMaxBot.Application.Interfaces;
 using NivoMaxBot.Messaging.Abstractions.Attachments.Inline;
 using NivoMaxBot.Messaging.Abstractions.Types;
 using NivoMaxBot.Messaging.Handlers.Interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NivoMaxBot.Presentation.Handlers.Messages.Products.Admin.Update
 {
@@ -112,7 +113,13 @@ namespace NivoMaxBot.Presentation.Handlers.Messages.Products.Admin.Update
                 {
                     string? newPhoto;
                     state.Data["photoUrl"] = original.PhotoUrl;
-                    if (message.Photo != null)
+
+                    if (message.Photo?.Url != null)
+                    {
+                        state.Data["photoUrl"] = message.Photo.Url;
+                        newPhoto = original.PhotoMaxFileId;
+                    }
+                    else if (message.Photo?.FileId != null)
                     {
                         newPhoto = message.Photo.FileId;
                     }
@@ -132,9 +139,11 @@ namespace NivoMaxBot.Presentation.Handlers.Messages.Products.Admin.Update
                     }
                     else
                     {
-                        await _botClient.SendTextMessageAsync(chatId, "Пожалуйста, отправьте фото, '-' или '.'", ct: ct);
+                        await _botClient.SendTextMessageAsync(chatId, "Пожалуйста, отправьте фото " +
+                            "или ссылку ('-' для пропуска, '.' для удаления фото).", ct: ct);
                         return;
                     }
+
                     state.Data["photo"] = newPhoto;
                     state.Step = 6;
                     await _botClient.SendTextMessageAsync(

@@ -18,12 +18,12 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Products.Admin.Update
 
         public ProductEditFinishHandler(
             IUserStateService userStateService,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IMediator mediator,
             IMenuBuilder menuBuilder)
         {
             _userStateService = userStateService;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _mediator = mediator;
             _menuBuilder = menuBuilder;
         }

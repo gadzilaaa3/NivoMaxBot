@@ -5,7 +5,7 @@ namespace NivoMaxBot.Domain.Interfaces.Repositories
 {
     public interface IAdminRepository : IRepository<Admin>
     {
-        Task<Admin?> GetByMaxIdAsync(long telegramId, CancellationToken cancellationToken = default);
+        Task<Admin?> GetByMaxIdAsync(long messengerId, CancellationToken cancellationToken = default);
 
         Task<IEnumerable<Admin>> GetSuperAdminsAsync(CancellationToken cancellationToken = default);
     }

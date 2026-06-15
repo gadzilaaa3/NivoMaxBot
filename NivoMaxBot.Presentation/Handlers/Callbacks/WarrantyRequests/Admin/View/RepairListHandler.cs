@@ -11,9 +11,9 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.WarrantyRequests.Admin.View
         private readonly IMessengerClient _botClient;
 
         public RepairListHandler(
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
         public async Task HandleAsync(ICallbackQuery query, CancellationToken ct)
         {

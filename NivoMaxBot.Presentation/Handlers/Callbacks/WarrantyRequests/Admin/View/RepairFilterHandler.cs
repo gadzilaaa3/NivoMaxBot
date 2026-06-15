@@ -21,12 +21,12 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.WarrantyRequests.Admin.View
 
         public RepairFilterHandler(
             IMediator mediator,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IUserStateService userStateService,
             IPaginationControlsBuilder paginationControlsBuilder)
         {
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _userStateService = userStateService;
             _paginationControlsBuilder = paginationControlsBuilder;
         }

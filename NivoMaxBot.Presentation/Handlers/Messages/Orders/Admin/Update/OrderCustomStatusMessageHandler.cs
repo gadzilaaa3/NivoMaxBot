@@ -21,13 +21,13 @@ namespace NivoMaxBot.Presentation.Handlers.Messages.Orders.Admin.Update
         public OrderCustomStatusMessageHandler(
             IUserStateService userStateService,
             IMediator mediator,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IMenuBuilder menuBuilder,
             IErrorHandler errorHandler)
         {
             _userStateService = userStateService;
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _menuBuilder = menuBuilder;
             _errorHandler = errorHandler;
         }

@@ -9,9 +9,9 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.WarrantyRequests.Admin.Dele
     {
         private readonly IMessengerClient _botClient;
         public RepairDeleteHandler(
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
         public async Task HandleAsync(ICallbackQuery query, int requestId, CancellationToken ct)
         {

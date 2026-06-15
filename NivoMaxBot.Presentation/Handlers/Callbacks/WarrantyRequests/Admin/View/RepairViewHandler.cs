@@ -17,10 +17,10 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.WarrantyRequests.Admin.View
 
         public RepairViewHandler(
             IMediator mediator,
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
         public async Task HandleAsync(ICallbackQuery query, int requestId, CancellationToken ct)
         {

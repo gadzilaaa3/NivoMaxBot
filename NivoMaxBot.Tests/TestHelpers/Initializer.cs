@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NivoMaxBot.Application;
 using NivoMaxBot.Infrastructure;
 
-namespace NivoTelegramBot.Tests.TestHelpers
+namespace NivoMaxBot.Tests.TestHelpers
 {
     internal class Initializer
     {

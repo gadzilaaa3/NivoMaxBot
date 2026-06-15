@@ -17,12 +17,12 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Admins.Delete
 
         public AdminDeleteConfirmHandler(
             IMediator mediator,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IMenuBuilder menuBuilder,
             IErrorHandler errorHandler)
         {
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _menuBuilder = menuBuilder;
             _errorHandler = errorHandler;
         }

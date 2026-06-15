@@ -22,13 +22,13 @@ namespace NivoMaxBot.Presentation.Handlers.Messages.Admins.Add
         public AdminAddMessageHandler(
             IUserStateService userStateService,
             IMediator mediator,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IMenuBuilder menuBuilder,
             IErrorHandler errorHandler)
         {
             _userStateService = userStateService;
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _menuBuilder = menuBuilder;
             _errorHandler = errorHandler;
         }
@@ -50,7 +50,7 @@ namespace NivoMaxBot.Presentation.Handlers.Messages.Admins.Add
             {
                 await (data.CurrentStep switch
                 {
-                    AdminAddHandler.AddAdminStep.TelegramId => HandleTelegramIdStep(message, data, chatId, ct),
+                    AdminAddHandler.AddAdminStep.MessengerId => HandleMessengerIdStep(message, data, chatId, ct),
                     AdminAddHandler.AddAdminStep.UserName => HandleUserNameStep(message, data, chatId, ct),
                     _ => throw new IncorrectStateException(nameof(AdminAddMessageHandler)),
                 });
@@ -87,17 +87,17 @@ namespace NivoMaxBot.Presentation.Handlers.Messages.Admins.Add
             await _botClient.SendTextMessageAsync(chatId, "Выберите роль:", replyMarkup: keyboard, ct: ct);
         }
 
-        public async Task HandleTelegramIdStep(IMessage message, 
+        public async Task HandleMessengerIdStep(IMessage message, 
             AdminAddHandler.AdminAddData data, long chatId, CancellationToken ct = default)
         {
-            if (!long.TryParse(message.Text, out var telegramId))
+            if (!long.TryParse(message.Text, out var messengerId))
             {
                 await _botClient.SendTextMessageAsync(chatId, "Неверный формат Messenger ID. Введите число.", ct: ct);
                 return;
             }
 
             // Сохраняем ID и запрашиваем username
-            data.TelegramId = telegramId;
+            data.MessengerId = messengerId;
             data.CurrentStep = AdminAddHandler.AddAdminStep.UserName;
 
             await _botClient.SendTextMessageAsync(chatId, "Введите username (или '-', чтобы пропустить):", ct: ct);

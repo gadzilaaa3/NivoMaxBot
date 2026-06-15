@@ -17,10 +17,10 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Orders.Admin.View
 
         public OrderViewHandler(
             IMediator mediator,
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
 
         public async Task HandleAsync(ICallbackQuery query, int orderId, CancellationToken ct)

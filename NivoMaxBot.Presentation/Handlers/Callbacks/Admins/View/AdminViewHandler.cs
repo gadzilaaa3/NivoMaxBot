@@ -15,9 +15,9 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Admins.View
 
         public AdminViewHandler(
             IMediator mediator,
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _mediator = mediator;
         }
 
@@ -33,7 +33,7 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Admins.View
 
             var text = $"<b>👤 Администратор</b>\n" +
                        $"ID: {admin.Id}\n" +
-                       $"Telegram ID: {admin.MaxId}\n" +
+                       $"Messenger ID: {admin.MaxId}\n" +
                        $"Username: {System.Security.SecurityElement.Escape(admin.Username ?? "—")}\n" +
                        $"Роль: {(admin.IsSuperAdmin ? "Суперадмин" : "Обычный администратор")}";
 

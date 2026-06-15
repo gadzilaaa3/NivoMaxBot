@@ -6,6 +6,7 @@ using NivoMaxBot.Messaging.Abstractions.Types;
 using NivoMaxBot.Messaging.Abstractions.Types.Enums;
 using NivoMaxBot.Messaging.Routing;
 using NivoMaxBot.Presentation.Common.Keyboards.Pagination;
+using NivoMaxBot.Shared.Helpers;
 using NivoMaxBot.Shared.Pagination;
 
 namespace NivoMaxBot.Presentation.Handlers.Callbacks.ConsultationRequests.View
@@ -53,7 +54,7 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.ConsultationRequests.View
             foreach (var r in requests.Items)
             {
                 buttons.Add(new[] { new InlineKeyboardButton(
-                    $"Заявка #{r.Id} от {r.CreatedAt:dd.MM.yyyy} - {r.Status}", 
+                    $"Заявка #{r.Id} от {MoscowTimeHelper.ToMoscowTimeString(r.CreatedAt)} - {r.Status}", 
                     $"{ConsultationRequestRoutes.ConsultationView}:{r.Id}") });
             }
             var paginationButtons = _paginationService.CreatePaginationButtons(requests, $"{ConsultationRequestRoutes.ConsultationPage}:{{0}}");

@@ -21,12 +21,12 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Orders.Admin.View
 
         public OrderFilterHandler(
             IMediator mediator,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IUserStateService userStateService,
             IPaginationControlsBuilder paginationControlsBuilder)
         {
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _userStateService = userStateService;
             _paginationBuilder = paginationControlsBuilder;
         }

@@ -22,8 +22,8 @@ namespace NivoMaxBot.MaxMessaging.Adapters
             get
             {
                 var photo = _maxMessage?.Body?.Attachments
-                    .FirstOrDefault(a => a is PhotoAttachment) as PhotoAttachment;
-
+                    ?.OfType<PhotoAttachment>()
+                    .FirstOrDefault();
                 return photo != null ? new MaxPhotoAdapter(photo) : null;
             }
         }
@@ -33,8 +33,8 @@ namespace NivoMaxBot.MaxMessaging.Adapters
             get
             {
                 var video = _maxMessage?.Body?.Attachments
-                    .FirstOrDefault(a => a is VideoAttachment) as VideoAttachment;
-
+                    ?.OfType<VideoAttachment>()
+                    .FirstOrDefault();
                 return video != null ? new MaxVideoAdapter(video) : null;
             }
         }

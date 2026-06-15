@@ -1,6 +1,4 @@
-﻿using NivoTelegramBot.Tests.TestHelpers;
-
-namespace NivoMaxBot.Tests.TestHelpers
+﻿namespace NivoMaxBot.Tests.TestHelpers
 {
     public abstract class BaseTest
     {

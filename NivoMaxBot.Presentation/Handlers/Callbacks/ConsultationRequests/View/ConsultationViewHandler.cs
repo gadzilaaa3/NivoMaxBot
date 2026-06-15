@@ -5,6 +5,7 @@ using NivoMaxBot.Messaging.Abstractions.Attachments.Inline;
 using NivoMaxBot.Messaging.Abstractions.Types;
 using NivoMaxBot.Messaging.Abstractions.Types.Enums;
 using NivoMaxBot.Messaging.Routing;
+using NivoMaxBot.Shared.Helpers;
 
 namespace NivoMaxBot.Presentation.Handlers.Callbacks.ConsultationRequests.View
 {
@@ -37,7 +38,7 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.ConsultationRequests.View
                        $"📞 Телефон: {request.PhoneNumber}\n" +
                        $"📝 Описание: {request.Description ?? "—"}\n" +
                        $"📊 Статус: {request.Status}\n" +
-                       $"🕒 Дата: {request.CreatedAt:dd.MM.yyyy HH:mm}";
+                       $"🕒 Дата: {MoscowTimeHelper.ToMoscowTimeString(request.CreatedAt)}";
             
             var buttons = new List<InlineKeyboardButton[]>();
             // Кнопки смены статуса

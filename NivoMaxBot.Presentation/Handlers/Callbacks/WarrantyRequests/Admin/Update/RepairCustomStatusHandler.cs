@@ -12,10 +12,10 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.WarrantyRequests.Admin.Upda
 
         public RepairCustomStatusHandler(
             IUserStateService userStateService,
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
             _userStateService = userStateService;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
         public async Task HandleAsync(ICallbackQuery query, int requestId, CancellationToken ct)
         {

@@ -18,12 +18,12 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.User.Catalog
         public UserCatalogHandler(
             IMediator mediator,
             IUserCategoryKeyboardFactory keyboardFactory,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IMenuDisplayService menuDisplayService)
         {
             _mediator = mediator;
             _keyboardFactory = keyboardFactory;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _menuDisplayService = menuDisplayService;
         }
 

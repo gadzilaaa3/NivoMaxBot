@@ -21,13 +21,13 @@ namespace NivoMaxBot.Presentation.Handlers.Messages.WarrantyRequest.Update
         public RepairCustomStatusMessageHandler(
             IUserStateService userStateService,
             IMediator mediator,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IMenuBuilder menuBuilder,
             IErrorHandler errorHandler)
         {
             _userStateService = userStateService;
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _menuBuilder = menuBuilder;
             _errorHandler = errorHandler;
         }

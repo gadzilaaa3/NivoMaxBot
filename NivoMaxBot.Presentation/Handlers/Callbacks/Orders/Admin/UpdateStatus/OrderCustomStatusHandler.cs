@@ -12,10 +12,10 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Orders.Admin.UpdateStatus
 
         public OrderCustomStatusHandler(
             IUserStateService userStateService,
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
             _userStateService = userStateService;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
         public async Task HandleAsync(ICallbackQuery query, int orderId, CancellationToken ct)
         {

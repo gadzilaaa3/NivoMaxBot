@@ -14,10 +14,10 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Admins.Add
 
         public AdminAddHandler(
             IUserStateService userStateService,
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
             _userStateService = userStateService;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
 
         public async Task HandleAsync(ICallbackQuery query, CancellationToken ct)
@@ -26,26 +26,26 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Admins.Add
             var state = _userStateService.GetState(userId);
             state.CurrentAction = ActionName;
 
-            var data = new AdminAddData() { CurrentStep = AddAdminStep.TelegramId };
+            var data = new AdminAddData() { CurrentStep = AddAdminStep.MessengerId };
             state.TypedData = data;
 
             _userStateService.SetState(userId, state);
 
             await _botClient.SendTextMessageAsync(query.Message.ChatId.Value,
-                "Введите Telegram ID пользователя, которого хотите сделать администратором:", ct: ct);
+                "Введите Messenger ID пользователя, которого хотите сделать администратором:", ct: ct);
         }
 
         public class AdminAddData
         {
             public AddAdminStep CurrentStep { get; set; }
-            public long TelegramId { get; set; }
+            public long MessengerId { get; set; }
             public string? UserName { get; set; }
             public bool IsSuperAdmin { get; set; }
         }
 
         public enum AddAdminStep
         {
-            TelegramId,
+            MessengerId,
             UserName,
             Role,
         }

@@ -17,11 +17,11 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Broadcast.Admin
         public BroadcastConfirmHandler(
             IMediator mediator,
             IUserStateService userStateService,
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
             _mediator = mediator;
             _userStateService = userStateService;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
 
         public async Task HandleAsync(ICallbackQuery query, CancellationToken ct)

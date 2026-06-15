@@ -115,8 +115,12 @@ namespace NivoMaxBot.Presentation.Handlers.Messages.Products.Admin.Create
         private async Task HandlePhotoStep(ProductAddData data, IMessage message,
             long chatId, CancellationToken ct)
         {
-            // Если сообщение содержит фото, берём file_id
-            if (message.Photo != null)
+            // Если сообщение содержит фото, берём file_id | url
+            if (message.Photo?.Url != null)
+            {
+                data.PhotoUrl = message.Photo.Url;
+            }
+            else if (message.Photo?.FileId != null)
             {
                 var fileId = message.Photo.FileId;
                 data.PhotoFileId = fileId;

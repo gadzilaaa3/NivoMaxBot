@@ -10,9 +10,9 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Admins.Delete
         private readonly IMessengerClient _botClient;
 
         public AdminDeleteHandler(
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
 
         public async Task HandleAsync(ICallbackQuery query, int adminId, CancellationToken ct)

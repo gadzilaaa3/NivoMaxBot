@@ -20,13 +20,13 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Admins.Add
         public AdminRoleHandler(
             IUserStateService userStateService,
             IMediator mediator,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IMenuBuilder menuBuilder,
             IErrorHandler errorHandler)
         {
             _userStateService = userStateService;
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _menuBuilder = menuBuilder;
             _errorHandler = errorHandler;
         }
@@ -48,7 +48,7 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Admins.Add
 
             var command = new AddAdminCommand
             {
-                MaxId = data.TelegramId,
+                MaxId = data.MessengerId,
                 UserName = data.UserName,
                 IsSuperAdmin = isSuperAdmin
             };

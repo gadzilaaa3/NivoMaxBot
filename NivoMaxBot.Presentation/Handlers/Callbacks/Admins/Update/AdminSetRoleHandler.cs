@@ -17,12 +17,12 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Admins.Update
 
         public AdminSetRoleHandler(
             IMediator mediator,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IErrorHandler errorHandler,
             IMenuBuilder menuBuilder)
         {
             _mediator = mediator;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _errorHandler = errorHandler;
             _menuBuilder = menuBuilder;
         }

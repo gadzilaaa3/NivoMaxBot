@@ -15,10 +15,10 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Broadcast.Admin
 
         public BroadcastTypeHandler(
             IUserStateService userStateService,
-            IMessengerClient telegramBotClient)
+            IMessengerClient messengerBotClient)
         {
             _userStateService = userStateService;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
         }
 
         public async Task HandleAsync(ICallbackQuery query, string type, CancellationToken ct)

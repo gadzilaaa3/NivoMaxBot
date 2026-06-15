@@ -16,11 +16,11 @@ namespace NivoMaxBot.Presentation.Handlers.Callbacks.Products.Admin.Update.Categ
 
         public ProductEditAddCategorySelectHandler(
             IUserStateService userStateService,
-            IMessengerClient telegramBotClient,
+            IMessengerClient messengerBotClient,
             IMediator mediator)
         {
             _userStateService = userStateService;
-            _botClient = telegramBotClient;
+            _botClient = messengerBotClient;
             _mediator = mediator;
         }
 

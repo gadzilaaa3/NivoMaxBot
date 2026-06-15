@@ -5,6 +5,6 @@ namespace NivoMaxBot.Domain.Interfaces.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<User?> GetByMaxIdAsync(long telegramId, CancellationToken cancellationToken = default);
+        Task<User?> GetByMaxIdAsync(long messengerId, CancellationToken cancellationToken = default);
     }
 }
