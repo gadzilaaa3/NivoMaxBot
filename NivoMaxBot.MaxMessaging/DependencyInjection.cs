@@ -6,18 +6,20 @@ using Microsoft.Extensions.DependencyInjection;
 using NivoMaxBot.MaxMessaging.Adapters;
 using NivoMaxBot.MaxMessaging.BackgroundServices;
 using NivoMaxBot.MaxMessaging.Dispatchers;
+using NivoMaxBot.MaxMessaging.Options;
+using NivoMaxBot.MaxMessaging.Webhook;
 using NivoMaxBot.Messaging.Abstractions.Types;
 
 namespace NivoMaxBot.MaxMessaging
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddMaxMessaging(this IServiceCollection services)
+        public static IServiceCollection AddMaxMessaging(this IServiceCollection services, 
+            IConfiguration configuration)
         {
-            services.AddScoped(services =>
+            services.AddSingleton(services =>
             {
-                var config = services.GetRequiredService<IConfiguration>();
-                var token = config.GetValue<string>("MaxBotToken");
+                var token = configuration["MaxBot:Token"];
 
                 return token == null
                     ? throw new ArgumentNullException("MaxBotToken in appsettings is empty, please correct this")
@@ -27,6 +29,13 @@ namespace NivoMaxBot.MaxMessaging
                     });
             });
 
+            // Привязываем настройки
+            services.Configure<MaxOptions>(configuration.GetSection(MaxOptions.SectionName));
+
+            // Регистрируем валидатор и конфигуратор
+            services.AddScoped<MaxWebhookSecretValidator>();
+            services.AddHostedService<WebhookConfigurator>();
+
             services.AddHttpClient();
 
             services.AddScoped<IMessengerClient>(provider =>
@@ -35,7 +44,7 @@ namespace NivoMaxBot.MaxMessaging
                 var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
                 
                 var configuration = provider.GetRequiredService<IConfiguration>();
-                var token = configuration.GetValue<string>("MaxBotToken");
+                var token = configuration["MaxBot:Token"];
                 var maxApiUrl = configuration.GetValue<string>("MaxApiUrl");
 
                 ArgumentNullException.ThrowIfNullOrEmpty(token);
@@ -44,7 +53,6 @@ namespace NivoMaxBot.MaxMessaging
                 return new MaxMessengerClient(maxClient, httpClientFactory, token, maxApiUrl);
             });
             services.AddScoped<IUpdateHandler, MaxUpdateHandler>();
-            services.AddHostedService<MaxBotBackgroundService>();
             return services;
         }
     }

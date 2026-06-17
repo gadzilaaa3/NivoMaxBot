@@ -1,4 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Max.Bot;
+using Max.Bot.Polling;
+using Max.Bot.Types;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -7,6 +13,8 @@ using NivoMaxBot.Application;
 using NivoMaxBot.Infrastructure;
 using NivoMaxBot.Infrastructure.Data;
 using NivoMaxBot.MaxMessaging;
+using NivoMaxBot.MaxMessaging.Dispatchers;
+using NivoMaxBot.MaxMessaging.Webhook;
 using NivoMaxBot.Messaging;
 
 namespace NivoMaxBot.Presentation
@@ -15,41 +23,60 @@ namespace NivoMaxBot.Presentation
     {
         static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            ApplyDbMigration(host);
+            var webApp = CreateApplicationBuilder(args).Build();
+            
+            ApplyDbMigration(webApp);
+            ConfigureWebApplication(webApp);
 
-            host.Run();
+            webApp.Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
+        static WebApplicationBuilder CreateApplicationBuilder(string[] args)
         {
-            var host = Host.CreateDefaultBuilder(args);
+            var builder = WebApplication.CreateBuilder(args);
 
-            host.ConfigureLogging(logging =>
-            {
-                logging.AddFilter("LuckyPennySoftware.MediatR.License", LogLevel.None);
-            });
+            builder.Configuration
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
 
-            host.ConfigureAppConfiguration((context, config) =>
-            {
-                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            });
+            builder.Logging.AddFilter("LuckyPennySoftware.MediatR.License", LogLevel.None);
 
-            host.ConfigureServices((context, services) =>
+            builder.Host.ConfigureServices((context, services) =>
             {
                 services.AddApplicationServices();
                 services.AddInfrastructureServices(context.Configuration);
                 services.AddMessaging(typeof(Program).Assembly);
-                services.AddMaxMessaging();
+                services.AddMaxMessaging(builder.Configuration);
                 services.AddPresentationServices();
             });
-            
-            return host;
+
+            return builder;
         }
 
-        public static void ApplyDbMigration(IHost host)
+        static void ConfigureWebApplication(WebApplication webApp)
         {
-            using (var scope = host.Services.CreateScope())
+            webApp.MapPost("/api/max/webhook", async ([FromBody] Update update, 
+                HttpContext ctx, MaxClient maxClient,
+                IUpdateHandler handler, IServiceProvider services) =>
+            {
+                // ПРОВЕРКА СЕКРЕТА
+                var validator = ctx.RequestServices.GetRequiredService<MaxWebhookSecretValidator>();
+                if (!await validator.ValidateRequestAsync(ctx.Request))
+                {
+                    return Results.Unauthorized();
+                }
+
+                if (update == null) return Results.BadRequest();
+
+                await maxClient.ProcessWebhookAsync(update, handler, services);
+                return Results.Ok();
+            });
+        }
+
+        public static void ApplyDbMigration(WebApplication webApp)
+        {
+            using (var scope = webApp.Services.CreateScope())
             {
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                 try
