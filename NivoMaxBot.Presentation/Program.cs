@@ -1,10 +1,4 @@
-﻿using Max.Bot;
-using Max.Bot.Polling;
-using Max.Bot.Types;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,8 +7,6 @@ using NivoMaxBot.Application;
 using NivoMaxBot.Infrastructure;
 using NivoMaxBot.Infrastructure.Data;
 using NivoMaxBot.MaxMessaging;
-using NivoMaxBot.MaxMessaging.Dispatchers;
-using NivoMaxBot.MaxMessaging.Webhook;
 using NivoMaxBot.Messaging;
 
 namespace NivoMaxBot.Presentation
@@ -23,60 +15,41 @@ namespace NivoMaxBot.Presentation
     {
         static void Main(string[] args)
         {
-            var webApp = CreateApplicationBuilder(args).Build();
-            
-            ApplyDbMigration(webApp);
-            ConfigureWebApplication(webApp);
+            var host = CreateHostBuilder(args).Build();
+            ApplyDbMigration(host);
 
-            webApp.Run();
+            host.Run();
         }
 
-        static WebApplicationBuilder CreateApplicationBuilder(string[] args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var host = Host.CreateDefaultBuilder(args);
 
-            builder.Configuration
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+            host.ConfigureLogging(logging =>
+            {
+                logging.AddFilter("LuckyPennySoftware.MediatR.License", LogLevel.None);
+            });
 
-            builder.Logging.AddFilter("LuckyPennySoftware.MediatR.License", LogLevel.None);
+            host.ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            });
 
-            builder.Host.ConfigureServices((context, services) =>
+            host.ConfigureServices((context, services) =>
             {
                 services.AddApplicationServices();
                 services.AddInfrastructureServices(context.Configuration);
                 services.AddMessaging(typeof(Program).Assembly);
-                services.AddMaxMessaging(builder.Configuration);
+                services.AddMaxMessaging();
                 services.AddPresentationServices();
             });
 
-            return builder;
+            return host;
         }
 
-        static void ConfigureWebApplication(WebApplication webApp)
+        public static void ApplyDbMigration(IHost host)
         {
-            webApp.MapPost("/api/max/webhook", async ([FromBody] Update update, 
-                HttpContext ctx, MaxClient maxClient,
-                IUpdateHandler handler, IServiceProvider services) =>
-            {
-                // ПРОВЕРКА СЕКРЕТА
-                var validator = ctx.RequestServices.GetRequiredService<MaxWebhookSecretValidator>();
-                if (!await validator.ValidateRequestAsync(ctx.Request))
-                {
-                    return Results.Unauthorized();
-                }
-
-                if (update == null) return Results.BadRequest();
-
-                await maxClient.ProcessWebhookAsync(update, handler, services);
-                return Results.Ok();
-            });
-        }
-
-        public static void ApplyDbMigration(WebApplication webApp)
-        {
-            using (var scope = webApp.Services.CreateScope())
+            using (var scope = host.Services.CreateScope())
             {
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                 try
@@ -91,7 +64,7 @@ namespace NivoMaxBot.Presentation
                     logger.LogError(ex, "Database migrations not applied");
                     Environment.Exit(1);
                 }
-                
+
             }
         }
     }
